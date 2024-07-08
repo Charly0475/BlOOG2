@@ -1,12 +1,12 @@
 <?php
 // on va utiliser notre manager de commentaires
-use model\Manager\CommentManager;
+use model\Manager\TagManager;
 // on va utiliser notre classe de mapping de commentaires
-use model\Mapping\CommentMapping;
+
 
 
 // create comment Manager
-$commentManager = new CommentManager($dbConnect);
+$tagManager = new TagManager($dbConnect);
 
 
 
@@ -14,7 +14,7 @@ $commentManager = new CommentManager($dbConnect);
 if(isset($_GET['view'])&&ctype_digit($_GET['view'])){
     $idComment = (int) $_GET['view'];
     // select one comment
-    $selectOneComment = $commentManager->selectOneById($idComment);
+    $selectOneTag = $tagManager->selectOneById($idTag);
     // view
     require "../view/comment/selectOneComment.view.php";
 
@@ -25,17 +25,17 @@ if(isset($_GET['view'])&&ctype_digit($_GET['view'])){
     if(isset($_POST['comment_text'])) {
         try{
             // create comment
-            $comment = new CommentMapping($_POST);
+            $comment = new TagMapping($_POST);
             // set date
-            $comment->setCommentDatePublish(new DateTime());
+            $comment->setTagDatePublish(new DateTime());
             // insert comment
-            $insertComment = $commentManager->insert($tag);
+            $insertTag = $tagManager->insert($comment);
 
-            if($insertComment===true) {
-                header("Location: ./?route=comment");
+            if($insertTag===true) {
+                header("Location: ./?route=tag");
                 exit();
             }else{
-                $error = $insertComment;
+                $error = $insertTag;
             }
         }catch(Exception $e){
             $error = $e->getMessage();
@@ -44,25 +44,25 @@ if(isset($_GET['view'])&&ctype_digit($_GET['view'])){
 
     }
     // view
-    require "../view/comment/insertComment.view.php";
+    require "../view/tag/insertTag.view.php";
 
 // delete comment
 }elseif (isset($_GET['update'])&&ctype_digit($_GET['update'])) {
-    $idComment = (int)$_GET['update'];
+    $idTag = (int)$_GET['update'];
 
     // update comment
-    if (isset($_POST['comment_text'])) {
+    if (isset($_POST['tag_text'])) {
         try {
             // create comment
-            $comment = new CommentMapping($_POST);
-            $comment->setCommentId($idComment);
+            $tag = new TagMapping($_POST);
+            $comment->setTagId($idTag);
             // update comment
-            $updateComment = $commentManager->update($tag);
+            $updateTag = $tagManager->update($tag);
             if($updateComment===true) {
-                header("Location: ./?route=comment");
+                header("Location: ./?route=tag");
                 exit();
             }else{
-                $error = $updateComment;
+                $error = $updateTag;
             }
         }catch (Exception $e) {
             $error = $e->getMessage();
@@ -70,26 +70,26 @@ if(isset($_GET['view'])&&ctype_digit($_GET['view'])){
 
     }
     // select one comment
-    $selectOneComment = $commentManager->selectOneById($idComment);
+    $selectOneTag = $tagManager->selectOneById($idTag);
     // view
     require "../view/comment/updateComment.view.php";
 
 // delete comment
 }elseif(isset($_GET['delete'])&&ctype_digit($_GET['delete'])){
-    $idComment = (int) $_GET['delete'];
+    $idTag = (int) $_GET['delete'];
     // delete comment
-    $deleteComment = $commentManager->delete($idComment);
-    if($deleteComment===true) {
-        header("Location: ./?route=comment");
+    $deleteTag = $tagManager->delete($idTag);
+    if($deleteTag===true) {
+        header("Location: ./?route=tag");
         exit();
     }else{
-        $error = $deleteComment;
+        $error = $deleteTag;
     }
 
 // homepage
 }else{
     // select all comments
-    $selectAllComments = $commentManager->selectAll();
+    $selectAllTags = $tagManager->selectAll();
     // view
-    require "../view/comment/selectAllComment.view.php";
+    require "../view/tag/selectAllTag.view.php";
 }

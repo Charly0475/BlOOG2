@@ -10,7 +10,7 @@ use Exception;
 class CategoryMapping extends AbstractMapping
 {
     // Les propriétés de la classe sont le nom des
-    // attributs de la table Exemple (qui serait en
+    // attributs de la table Example (qui serait en
     // base de données)
     protected ?int $category_id=null;
     protected ?string $category_name=null;

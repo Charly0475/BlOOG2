@@ -6,7 +6,7 @@ session_start();
 
 
 // Appel de la config
-require_once "../config.php";
+require_once "config.php";
 
 // our autoload
 spl_autoload_register(function ($class) {
